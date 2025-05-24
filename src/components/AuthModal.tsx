@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, Mail, Lock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,6 +23,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
   const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,12 +33,14 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: mode === 'login' ? "Welcome back!" : "Account created!",
+        title: mode === 'login' ? "أهلاً بك مرة أخرى!" : "تم إنشاء الحساب!",
         description: mode === 'login' 
-          ? "You have successfully signed in." 
-          : "Your account has been created. Welcome to AI Assistant!",
+          ? "تم تسجيل الدخول بنجاح." 
+          : "تم إنشاء حسابك بنجاح. مرحباً بك في منصة الذكاء الاصطناعي!",
       });
       onClose();
+      // توجيه المستخدم للداش بورد بعد التسجيل أو تسجيل الدخول
+      navigate('/dashboard');
     }, 1000);
   };
 
@@ -49,31 +52,31 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
             <Brain className="h-12 w-12 text-purple-400" />
           </div>
           <DialogTitle className="text-2xl font-bold">
-            {mode === 'login' ? 'Welcome Back' : 'Join AI Assistant'}
+            {mode === 'login' ? 'أهلاً بك مرة أخرى' : 'انضم إلى منصة الذكاء الاصطناعي'}
           </DialogTitle>
           <DialogDescription className="text-gray-300">
             {mode === 'login' 
-              ? 'Sign in to continue your AI journey' 
-              : 'Create your account and get started with credits'}
+              ? 'سجل دخولك لمتابعة رحلتك مع الذكاء الاصطناعي' 
+              : 'أنشئ حسابك واحصل على رصيد مجاني للبدء'}
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={mode} onValueChange={(value) => onSwitchMode(value as 'login' | 'register')} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-slate-800">
-            <TabsTrigger value="login" className="data-[state=active]:bg-purple-600">Sign In</TabsTrigger>
-            <TabsTrigger value="register" className="data-[state=active]:bg-purple-600">Sign Up</TabsTrigger>
+            <TabsTrigger value="login" className="data-[state=active]:bg-purple-600">تسجيل الدخول</TabsTrigger>
+            <TabsTrigger value="register" className="data-[state=active]:bg-purple-600">إنشاء حساب</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login" className="mt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-gray-300">البريد الإلكتروني</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="أدخل بريدك الإلكتروني"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -83,13 +86,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium text-gray-300">كلمة المرور</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="أدخل كلمة المرور"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -103,7 +106,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
               </Button>
             </form>
           </TabsContent>
@@ -111,13 +114,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
           <TabsContent value="register" className="mt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-sm font-medium text-gray-300">Full Name</Label>
+                <Label htmlFor="fullName" className="text-sm font-medium text-gray-300">الاسم الكامل</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="Enter your full name"
+                    placeholder="أدخل اسمك الكامل"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -127,13 +130,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-300">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-gray-300">البريد الإلكتروني</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="أدخل بريدك الإلكتروني"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -143,13 +146,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-300">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium text-gray-300">كلمة المرور</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Create a password"
+                    placeholder="أنشئ كلمة مرور"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -159,13 +162,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-300">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-300">تأكيد كلمة المرور</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <Input
                     id="confirmPassword"
                     type="password"
-                    placeholder="Confirm your password"
+                    placeholder="أكد كلمة المرور"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="pl-10 bg-slate-800 border-slate-700 text-white"
@@ -176,7 +179,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
 
               <div className="bg-purple-600/20 border border-purple-500/30 rounded-lg p-3">
                 <p className="text-sm text-purple-300 text-center">
-                  🎉 Get $5 in free credits when you sign up!
+                  🎉 احصل على 5$ رصيد مجاني عند التسجيل!
                 </p>
               </div>
 
@@ -185,7 +188,7 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isLoading ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
               </Button>
             </form>
           </TabsContent>
@@ -194,13 +197,13 @@ const AuthModal = ({ isOpen, onClose, mode, onSwitchMode }: AuthModalProps) => {
         <div className="text-center mt-6 pt-4 border-t border-slate-700">
           <p className="text-sm text-gray-400">
             {mode === 'login' 
-              ? "Don't have an account? " 
-              : "Already have an account? "}
+              ? "ليس لديك حساب؟ " 
+              : "لديك حساب بالفعل؟ "}
             <button
               onClick={() => onSwitchMode(mode === 'login' ? 'register' : 'login')}
               className="text-purple-400 hover:text-purple-300 font-medium"
             >
-              {mode === 'login' ? 'Sign up' : 'Sign in'}
+              {mode === 'login' ? 'سجل الآن' : 'سجل دخولك'}
             </button>
           </p>
         </div>
