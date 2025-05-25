@@ -21,6 +21,8 @@ interface Model {
   created_at: string;
 }
 
+type ModelStatus = 'active' | 'inactive';
+
 export const AdminModelsManager = () => {
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,7 @@ export const AdminModelsManager = () => {
     name: "",
     description: "",
     price_per_token: 0,
-    status: "active" as const
+    status: "active" as ModelStatus
   });
 
   useEffect(() => {
@@ -163,7 +165,7 @@ export const AdminModelsManager = () => {
       name: "",
       description: "",
       price_per_token: 0,
-      status: "active"
+      status: "active" as ModelStatus
     });
     setEditingModel(null);
   };
@@ -249,7 +251,7 @@ export const AdminModelsManager = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="status">الحالة</Label>
-                  <Select value={formData.status} onValueChange={(value: any) => setFormData({...formData, status: value})}>
+                  <Select value={formData.status} onValueChange={(value: ModelStatus) => setFormData({...formData, status: value})}>
                     <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
