@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { CreditCard, Paypal, Key, Settings, Save } from "lucide-react";
+import { CreditCard, Wallet, Key, Settings, Save } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PaymentSettings {
@@ -177,7 +176,7 @@ export const AdminSettingsManager = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-reverse space-x-2">
-                <Paypal className="h-5 w-5 text-blue-600" />
+                <Wallet className="h-5 w-5 text-blue-600" />
                 <Label htmlFor="paypal-enabled" className="text-white font-medium">
                   تفعيل PayPal
                 </Label>

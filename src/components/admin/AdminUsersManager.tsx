@@ -20,6 +20,8 @@ interface User {
   created_at: string;
 }
 
+type UserStatus = 'active' | 'inactive' | 'banned';
+
 export const AdminUsersManager = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,7 @@ export const AdminUsersManager = () => {
     name: "",
     email: "",
     balance: 0,
-    status: "active" as const
+    status: "active" as UserStatus
   });
 
   useEffect(() => {
@@ -243,7 +245,7 @@ export const AdminUsersManager = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="status">الحالة</Label>
-                  <Select value={formData.status} onValueChange={(value: any) => setFormData({...formData, status: value})}>
+                  <Select value={formData.status} onValueChange={(value: UserStatus) => setFormData({...formData, status: value})}>
                     <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                       <SelectValue />
                     </SelectTrigger>
